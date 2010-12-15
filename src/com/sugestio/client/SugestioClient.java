@@ -26,11 +26,20 @@ public class SugestioClient {
 	private ResponseHandler<byte[]> handler;
 	
 	
+	/**
+	 * Creates a new instance of the SugestioClient with the given access credentials.
+	 * @param account your account key
+	 */
 	public SugestioClient(String account) {		
 		this.account = account;
 		this.httpClient = new DefaultHttpClient();			
 	}
 	
+	/**
+	 * Submit a consumption.
+	 * @param consumption the consumption
+	 * @return result
+	 */
 	public SugestioResult addConsumption(JsonObject consumption) {
 		return this.doPost("/consumptions", jsonToNameValuePairs(consumption));
 	}
@@ -40,7 +49,13 @@ public class SugestioClient {
 		return null;
 	}
 	
-	private SugestioResult doPost (String resource, List<NameValuePair> parameters) {
+	/**
+	 * Performs a POST request to the given resource. Encodes given parameters as form data.
+	 * @param resource
+	 * @param parameters
+	 * @return result
+	 */
+	private SugestioResult doPost(String resource, List<NameValuePair> parameters) {
 		
 		SugestioResult result = new SugestioResult();
 		
@@ -48,8 +63,8 @@ public class SugestioClient {
 			
 			HttpPost httpPost = new HttpPost(getUri(resource));
 			httpPost.setEntity(new UrlEncodedFormEntity(parameters, "UTF-8"));
-        	HttpResponse httpResponse = httpClient.execute(httpPost);            
-            String message = EntityUtils.toString(httpResponse.getEntity());
+			HttpResponse httpResponse = httpClient.execute(httpPost);            
+			String message = EntityUtils.toString(httpResponse.getEntity());
             
             result.setCode(httpResponse.getStatusLine().getStatusCode());            
             result.setOk(result.getCode() == 202);            
@@ -66,10 +81,21 @@ public class SugestioClient {
         return result;		
 	}
 	
+	/**
+	 * Builds the full request URI from the base URI, account and resource. 
+	 * @param resource
+	 * @return
+	 */
 	private String getUri(String resource) {
 		return baseUri + "/sites/" + account + resource;
 	}
 	
+	/**
+	 * Converts a JSON object into NameValuePairs suitable which can be attached as query parameters
+	 * when performing a GET or form data when performing a POST. 
+	 * @param json the json object
+	 * @return a list of NameValuePairs
+	 */
 	private List<NameValuePair> jsonToNameValuePairs(JsonObject json) {
 	
 		List<NameValuePair> pairs = new ArrayList<NameValuePair>();
