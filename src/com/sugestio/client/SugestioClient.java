@@ -65,20 +65,20 @@ public class SugestioClient {
 			httpPost.setEntity(new UrlEncodedFormEntity(parameters, "UTF-8"));
 			HttpResponse httpResponse = httpClient.execute(httpPost);            
 			String message = EntityUtils.toString(httpResponse.getEntity());
-            
-            result.setCode(httpResponse.getStatusLine().getStatusCode());            
-            result.setOk(result.getCode() == 202);            
-            result.setMessage(message);            
+			
+			result.setCode(httpResponse.getStatusLine().getStatusCode());            
+			result.setOk(result.getCode() == 202);            
+			result.setMessage(message);            
  
-        } catch (Exception e)  {
+		} catch (Exception e)  {
         	
-            httpClient.getConnectionManager().shutdown();
-            result.setOk(false);
-            result.setCode(-1);
-            result.setMessage(e.getMessage());            
-        }
+			httpClient.getConnectionManager().shutdown();
+			result.setOk(false);
+			result.setCode(-1);
+			result.setMessage(e.getMessage());            
+		}
         
-        return result;		
+		return result;		
 	}
 	
 	/**
