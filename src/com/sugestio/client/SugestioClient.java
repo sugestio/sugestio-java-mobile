@@ -14,6 +14,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -41,7 +42,25 @@ public class SugestioClient {
 	 * @return result
 	 */
 	public SugestioResult addConsumption(JsonObject consumption) {
-		return this.doPost("/consumptions", jsonToNameValuePairs(consumption));
+		return this.doPost("/consumptions", consumption);
+	}
+	
+	/**
+	 * Submit item meta data.
+	 * @param item the item
+	 * @return result
+	 */
+	public SugestioResult addItem(JsonObject item) {
+		return this.doPost("/items", item);
+	}
+	
+	/**
+	 * Submit user meta data.
+	 * @param user the user
+	 * @return result
+	 */
+	public SugestioResult addUser(JsonObject user) {
+		return this.doPost("/users", user);
 	}
 
 	private JsonObject doGet(String resource, List<NameValuePair> parameters) {
@@ -50,13 +69,14 @@ public class SugestioClient {
 	}
 	
 	/**
-	 * Performs a POST request to the given resource. Encodes given parameters as form data.
+	 * Performs a POST request to the given resource. Encodes given JSON object as form data.
 	 * @param resource
-	 * @param parameters
+	 * @param json JSON object with data fields
 	 * @return result
 	 */
-	private SugestioResult doPost(String resource, List<NameValuePair> parameters) {
+	private SugestioResult doPost(String resource, JsonObject json) {
 		
+		List<NameValuePair> parameters = jsonToNameValuePairs(json);
 		SugestioResult result = new SugestioResult();
 		
 		try {
@@ -93,7 +113,7 @@ public class SugestioClient {
 	/**
 	 * Converts a JSON object into NameValuePairs suitable which can be attached as query parameters
 	 * when performing a GET or form data when performing a POST. 
-	 * @param json the json object
+	 * @param json the JSON object
 	 * @return a list of NameValuePairs
 	 */
 	private List<NameValuePair> jsonToNameValuePairs(JsonObject json) {
@@ -101,8 +121,14 @@ public class SugestioClient {
 		List<NameValuePair> pairs = new ArrayList<NameValuePair>();
 		
 		for (Entry<String, JsonElement> entry : json.entrySet()) {
-			if (entry.getValue().isJsonPrimitive()) {
-				pairs.add(new BasicNameValuePair(entry.getKey(), entry.getValue().getAsString()));
+			
+			if (entry.getValue().isJsonPrimitive()) {				
+				pairs.add(new BasicNameValuePair(entry.getKey(), entry.getValue().getAsString()));				
+			} else if (entry.getValue().isJsonArray()) {				
+				JsonArray array = entry.getValue().getAsJsonArray();				
+				for (int i=0; i<array.size(); i++) {
+					pairs.add(new BasicNameValuePair(entry.getKey() + "[]", array.get(i).getAsString()));
+				}
 			}
 		}
 		
