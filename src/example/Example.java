@@ -8,9 +8,23 @@ import com.sugestio.client.SugestioResult;
 
 public class Example {
 
-	public static void main(String[] args) {		
-		Example.addConsumption();
-		Example.addItem();
+	public static void main(String[] args) {
+		Example.getRecommendations();
+		//Example.addConsumption();
+		//Example.addItem();
+	}
+	
+	private static void getRecommendations() {
+		
+		SugestioClient client = new SugestioClient("sandbox");
+		
+		try {
+			JsonArray recommendations = client.getRecommendations("1", null);
+			Example.print(recommendations);
+		} catch (Exception e) {			
+			e.printStackTrace();
+		}		
+		
 	}
 	
 	private static void addConsumption() {		
@@ -22,7 +36,7 @@ public class Example {
 		consumption.addProperty("itemid", "x");
 		
 		SugestioResult result = client.addConsumption(consumption);
-		Example.print(result);
+		Example.print(result);	
 	}
 	
 	private static void addItem() {
@@ -41,6 +55,27 @@ public class Example {
 		
 		SugestioResult result = client.addItem(item);		
 		Example.print(result);
+	}
+	
+	private static void print (JsonArray recommendations) {
+		
+		System.out.println(recommendations.size() + " recommendations.");
+		
+		for (int i=0; i<recommendations.size(); i++) {
+			
+			JsonObject recommendation = recommendations.get(i).getAsJsonObject();
+			String itemid = recommendation.get("itemid").getAsString();
+			String score = recommendation.get("score").getAsString();
+			
+			if (recommendation.has("item")) {			
+				JsonObject item = recommendation.get("item").getAsJsonObject();				
+				System.out.println(item.get("title").getAsString() + " (" + score + ")");
+			} else {
+				System.out.println(itemid + " (" + score + ")");
+			}
+			
+			
+		}
 	}
 	
 	private static void print(SugestioResult result) {		
