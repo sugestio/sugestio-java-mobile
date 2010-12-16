@@ -25,10 +25,10 @@ package example;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 import com.sugestio.client.SugestioClient;
 import com.sugestio.client.SugestioResult;
 import com.sugestio.client.model.Consumption;
+import com.sugestio.client.model.Item;
 
 public class Example {
 
@@ -70,15 +70,11 @@ public class Example {
 		
 		SugestioClient client = new SugestioClient("sandbox");
 		
-		JsonObject item = new JsonObject();
-		item.addProperty("id", "x");
-		item.addProperty("title", "Item X");
-		item.addProperty("permalink", "http://localhost/books/x.html");
-		
-		JsonArray categories = new JsonArray();
-		categories.add(new JsonPrimitive("A"));
-		categories.add(new JsonPrimitive("B"));		
-		item.add("category", categories);
+		Item item = new Item("x");
+		item.setTitle("Item X");
+		item.setPermalink("http://localhost/books/x.html");
+		item.addCategory("A");
+		item.addCategory("B");
 		
 		SugestioResult result = client.addItem(item);		
 		Example.print(result);

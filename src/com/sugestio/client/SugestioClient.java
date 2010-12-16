@@ -44,6 +44,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.sugestio.client.model.Consumption;
+import com.sugestio.client.model.Item;
 
 
 public class SugestioClient {
@@ -113,8 +114,8 @@ public class SugestioClient {
 	 * @param item the item
 	 * @return result
 	 */
-	public SugestioResult addItem(JsonObject item) {
-		return this.doPost("/items", item);
+	public SugestioResult addItem(Item item) {
+		return this.doPost("/items", gson.toJsonTree(item).getAsJsonObject());
 	}
 	
 	/**
