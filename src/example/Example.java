@@ -23,7 +23,9 @@
  */
 package example;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.sugestio.client.SugestioClient;
 import com.sugestio.client.SugestioResult;
@@ -43,9 +45,11 @@ public class Example {
 	public static void getRecommendations() {
 		
 		SugestioClient client = new SugestioClient("sandbox");
+		Map<String, String> parameters = new HashMap<String, String>();
+		parameters.put("category", "B,!C");
 		
 		try {
-			List<Recommendation> recommendations = client.getRecommendations("1", null);
+			List<Recommendation> recommendations = client.getRecommendations("1", parameters);
 			Example.print(recommendations);
 		} catch (Exception e) {	
 			e.printStackTrace();

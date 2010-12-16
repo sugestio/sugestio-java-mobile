@@ -35,6 +35,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
@@ -53,8 +54,7 @@ import com.sugestio.client.model.User;
 
 public class SugestioClient {
 	
-	private String baseUri = "http://api.sugestio.com";
-	private HttpClient httpClient;
+	private String baseUri = "http://api.sugestio.com";	
 	private Gson gson;
 	private String account;
 		
@@ -64,8 +64,7 @@ public class SugestioClient {
 	 * @param account your account key
 	 */
 	public SugestioClient(String account) {		
-		this.account = account;		
-		this.httpClient = new DefaultHttpClient();
+		this.account = account;
 		this.gson = new Gson();
 	}
 	
@@ -135,22 +134,42 @@ public class SugestioClient {
 		return this.doPost("/users", user);
 	}
 
+	/**
+	 * Performs a GET request and returns the response body as a JsonElement.
+	 * @param resource the resource to get
+	 * @param parameters query string parameters
+	 * @param raise404 if true, a HTTP response of 404 will raise an exception, if false, the method will return null
+	 * @return JsonElement
+	 * @throws Exception
+	 */
 	private JsonElement doGet(String resource, Map<String, String> parameters, boolean raise404) throws Exception {
 		
-		List<NameValuePair> queryParams = new ArrayList<NameValuePair>(); // todo
-		//URLEncodedUtils.format(null, "UTF-8");
+		HttpClient httpClient = new DefaultHttpClient();
+		String uri = getUri(resource);
+		
+		if (parameters != null && parameters.size() > 0) {
+			
+			List<NameValuePair> queryParams = new ArrayList<NameValuePair>();			
+			for (String key : parameters.keySet()) {
+				queryParams.add(new BasicNameValuePair(key, parameters.get(key)));
+			}
+			
+			uri += "?" + URLEncodedUtils.format(queryParams, "UTF-8");
+		}
 		
 		try {
 			
-			HttpGet httpGet = new HttpGet(getUri(resource));
+			HttpGet httpGet = new HttpGet(uri);			
 			HttpResponse httpResponse = httpClient.execute(httpGet);
 			String body = EntityUtils.toString(httpResponse.getEntity());
 			int code = httpResponse.getStatusLine().getStatusCode();
-			
+						
 			if (code == 200) {			
+				httpClient.getConnectionManager().shutdown();
 				JsonParser parser = new JsonParser();				
-				return parser.parse(body);
+				return parser.parse(body);				
 			} else if (code == 404 && !raise404) {
+				httpClient.getConnectionManager().shutdown();
 				return null;
 			} else {
 				String message = "Response code " + httpResponse.getStatusLine().getStatusCode() + ". ";
@@ -173,11 +192,12 @@ public class SugestioClient {
 	 */
 	private SugestioResult doPost(String resource, Object object) {
 		
+		HttpClient httpClient = new DefaultHttpClient();
 		JsonObject jsonObject = gson.toJsonTree(object).getAsJsonObject();
 		List<NameValuePair> parameters = jsonToNameValuePairs(jsonObject);
 		SugestioResult result = new SugestioResult();
 		
-		try {
+		try {		
 			
 			HttpPost httpPost = new HttpPost(getUri(resource));
 			httpPost.setEntity(new UrlEncodedFormEntity(parameters, "UTF-8"));
@@ -186,7 +206,9 @@ public class SugestioClient {
 			
 			result.setCode(httpResponse.getStatusLine().getStatusCode());            
 			result.setOk(result.getCode() == 202);            
-			result.setMessage(message);            
+			result.setMessage(message);
+			
+			httpClient.getConnectionManager().shutdown();
  
 		} catch (Exception e)  {
         	
