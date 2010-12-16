@@ -38,16 +38,19 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.sugestio.client.model.Consumption;
 
 
 public class SugestioClient {
 	
 	private String baseUri = "http://api.sugestio.com";
 	private HttpClient httpClient;
+	private Gson gson;
 	private String account;
 		
 	
@@ -56,8 +59,9 @@ public class SugestioClient {
 	 * @param account your account key
 	 */
 	public SugestioClient(String account) {		
-		this.account = account;
-		this.httpClient = new DefaultHttpClient();			
+		this.account = account;		
+		this.httpClient = new DefaultHttpClient();
+		this.gson = new Gson();
 	}
 	
 	/**
@@ -100,8 +104,8 @@ public class SugestioClient {
 	 * @param consumption the consumption
 	 * @return result
 	 */
-	public SugestioResult addConsumption(JsonObject consumption) {
-		return this.doPost("/consumptions", consumption);
+	public SugestioResult addConsumption(Consumption consumption) {
+		return this.doPost("/consumptions", gson.toJsonTree(consumption).getAsJsonObject());
 	}
 	
 	/**
@@ -155,7 +159,7 @@ public class SugestioClient {
 	/**
 	 * Performs a POST request to the given resource. Encodes given JSON object as form data.
 	 * @param resource
-	 * @param json JSON object with data fields
+	 * @param jsonObject JSON object with data fields
 	 * @return result
 	 */
 	private SugestioResult doPost(String resource, JsonObject json) {
@@ -185,6 +189,7 @@ public class SugestioClient {
 		return result;		
 	}
 	
+
 	/**
 	 * Builds the full request URI from the base URI, account and resource. 
 	 * @param resource

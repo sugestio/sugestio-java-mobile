@@ -28,16 +28,17 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.sugestio.client.SugestioClient;
 import com.sugestio.client.SugestioResult;
+import com.sugestio.client.model.Consumption;
 
 public class Example {
 
 	public static void main(String[] args) {
-		Example.getRecommendations();
+		//Example.getRecommendations();
 		//Example.addConsumption();
-		//Example.addItem();
+		//Example.addItem();		
 	}
 	
-	private static void getRecommendations() {
+	public static void getRecommendations() {
 		
 		SugestioClient client = new SugestioClient("sandbox");
 		
@@ -50,19 +51,22 @@ public class Example {
 		
 	}
 	
-	private static void addConsumption() {		
+	public static void addConsumption() {		
 		
 		SugestioClient client = new SugestioClient("sandbox");
 		
-		JsonObject consumption = new JsonObject();
-		consumption.addProperty("userid", "1");
-		consumption.addProperty("itemid", "x");
+		Consumption consumption = new Consumption();
+		consumption.setUserid("1");
+		consumption.setItemid("x");
+		consumption.setType("RATING");
+		consumption.setDetail("STAR:5:1:3");
+		consumption.setDate("NOW");
 		
-		SugestioResult result = client.addConsumption(consumption);
+		SugestioResult result = client.addConsumption(consumption);		
 		Example.print(result);	
 	}
 	
-	private static void addItem() {
+	public static void addItem() {
 		
 		SugestioClient client = new SugestioClient("sandbox");
 		
