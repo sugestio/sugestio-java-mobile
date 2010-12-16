@@ -27,34 +27,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Item {
-
+	
 	private String id;
-    private String title;
-    private String permalink;
-    private String available;
-    private String description_short;
-    private String description_long;
-    private String from;
-    private String until;
-    private String location_simple;
-    private String location_latlong;
-    private List<String> category = new ArrayList<String>();
-    private List<String> creator = new ArrayList<String>(); 
-    private List<String> segment = new ArrayList<String>();
-    private List<String> tag = new ArrayList<String>();
-    
-    
-    public Item() {
-    	
-    }
-    
-    /**
-     * Creates a new Item
-     * @param id string that uniquely identifies the item
-     */
-    public Item(String id) {
-    	this.id = id;
-    }
+	private String title;
+	private String permalink;
+	private String available;
+	private String description_short;
+	private String description_long;
+	private String from;
+	private String until;
+	private String location_simple;
+	private String location_latlong;
+	private List<String> category = new ArrayList<String>();
+	private List<String> creator = new ArrayList<String>(); 
+	private List<String> segment = new ArrayList<String>();
+	private List<String> tag = new ArrayList<String>();
+	
+	
+	public Item() {
+		
+	}
+	
+	/**
+	 * Creates a new Item instance
+	 * @param id string that uniquely identifies the item
+	 */
+	public Item(String id) {
+		this.id = id;
+	}
 
 	/**
 	 * @return the id
@@ -251,20 +251,20 @@ public class Item {
 	public void setSegment(List<String> segment) {
 		this.segment = segment;
 	}
-    
+	
 	public void addCategory(String category) {
-        this.category.add(category);
-    }
+		this.category.add(category);
+	}
 	
 	public void addCreator(String creator) {
-        this.creator.add(creator);
-    }	
-	    
+		this.creator.add(creator);
+	}	
+		
 	public void addSegment(String segment) {
-        this.segment.add(segment);
-    }
+		this.segment.add(segment);
+	}
 	
 	public void addTag(String tag) {
-        this.tag.add(tag);
-    }
+		this.tag.add(tag);
+	}
 }

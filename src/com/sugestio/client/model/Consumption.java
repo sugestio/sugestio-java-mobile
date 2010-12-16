@@ -31,6 +31,7 @@ public class Consumption {
 	private String detail;
 	private String date;
 	
+	
 	public Consumption() {
 		
 	}

@@ -26,23 +26,23 @@ package com.sugestio.client.model;
 public class User {
 	
 	private String id;
-    private String location_simple;
-    private String location_latlong;
-    private String gender;
-    private String birthday;
+	private String location_simple;
+	private String location_latlong;
+	private String gender;
+	private String birthday;
 
-    
-    public User() {
-    	
-    }
-    
-    /**
-     * Creates a new User instance.
-     * @param id string that uniquely identifies the user
-     */
-    public User(String id) {
-    	this.id = id;
-    }
+	
+	public User() {
+		
+	}
+	
+	/**
+	 * Creates a new User instance.
+	 * @param id string that uniquely identifies the user
+	 */
+	public User(String id) {
+		this.id = id;
+	}
 
 	/**
 	 * @return the id

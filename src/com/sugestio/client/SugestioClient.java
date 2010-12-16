@@ -107,7 +107,7 @@ public class SugestioClient {
 	 * @return result
 	 */
 	public SugestioResult addConsumption(Consumption consumption) {
-		return this.doPost("/consumptions", gson.toJsonTree(consumption).getAsJsonObject());
+		return this.doPost("/consumptions", consumption);
 	}
 	
 	/**
@@ -116,7 +116,7 @@ public class SugestioClient {
 	 * @return result
 	 */
 	public SugestioResult addItem(Item item) {
-		return this.doPost("/items", gson.toJsonTree(item).getAsJsonObject());
+		return this.doPost("/items", item);
 	}
 	
 	/**
@@ -125,7 +125,7 @@ public class SugestioClient {
 	 * @return result
 	 */
 	public SugestioResult addUser(User user) {
-		return this.doPost("/users", gson.toJsonTree(user).getAsJsonObject());
+		return this.doPost("/users", user);
 	}
 
 	private JsonElement doGet(String resource, Map<String, String> parameters, boolean raise404) throws Exception {
@@ -161,12 +161,13 @@ public class SugestioClient {
 	/**
 	 * Performs a POST request to the given resource. Encodes given JSON object as form data.
 	 * @param resource
-	 * @param jsonObject JSON object with data fields
+	 * @param object the object to submit
 	 * @return result
 	 */
-	private SugestioResult doPost(String resource, JsonObject json) {
+	private SugestioResult doPost(String resource, Object object) {
 		
-		List<NameValuePair> parameters = jsonToNameValuePairs(json);
+		JsonObject jsonObject = gson.toJsonTree(object).getAsJsonObject();
+		List<NameValuePair> parameters = jsonToNameValuePairs(jsonObject);
 		SugestioResult result = new SugestioResult();
 		
 		try {
