@@ -51,10 +51,15 @@ HTTP requests. The Android 2.x platform already includes HttpClient 4.
 
 ## Quick start
 
-	SugestioClient client = new SugestioClient("sandbox");		
-	JsonObject consumption = new JsonObject();
-	consumption.addProperty("userid", "1");
-	consumption.addProperty("itemid", "x");		
-	SugestioResult result = client.addConsumption(consumption);
+	SugestioClient client = new SugestioClient("sandbox");
+		
+	Consumption consumption = new Consumption();
+	consumption.setUserid("1");
+	consumption.setItemid("x");
+	consumption.setType("RATING");
+	consumption.setDetail("STAR:5:1:3");
+	consumption.setDate("NOW");
+	
+	SugestioResult result = client.addConsumption(consumption);	
 
 See src/example/Example.java for more sample code.
