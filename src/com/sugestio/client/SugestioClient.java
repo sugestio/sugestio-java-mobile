@@ -23,6 +23,7 @@
  */
 package com.sugestio.client;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -43,8 +44,10 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
 import com.sugestio.client.model.Consumption;
 import com.sugestio.client.model.Item;
+import com.sugestio.client.model.Recommendation;
 import com.sugestio.client.model.User;
 
 
@@ -73,14 +76,16 @@ public class SugestioClient {
 	 * @return recommendations
 	 * @throws Exception
 	 */
-	public JsonArray getRecommendations(String userid, Map<String, String> parameters) throws Exception {
+	public List<Recommendation> getRecommendations(String userid, Map<String, String> parameters) throws Exception {
 		
 		JsonElement response = doGet("/users/" + userid + "/recommendations.json", parameters, false); 
 		
-		if (response != null)
-			return response.getAsJsonArray();
-		else
-			return new JsonArray();
+		if (response != null) {			
+			Type listType = new TypeToken<List<Recommendation>>() {}.getType();
+			return gson.fromJson(response.getAsJsonArray(), listType);
+		} else {
+			return new ArrayList<Recommendation>();
+		}
 		
 	}
 	
@@ -91,14 +96,16 @@ public class SugestioClient {
 	 * @return similar item recommendations
 	 * @throws Exception
 	 */
-	public JsonArray getSimilarItems(String itemid, Map<String, String> parameters) throws Exception {
+	public List<Recommendation> getSimilarItems(String itemid, Map<String, String> parameters) throws Exception {
 		
-		JsonElement response = doGet("/users/" + itemid + "/similar.json", parameters, false); 
+		JsonElement response = doGet("/items/" + itemid + "/similar.json", parameters, false); 
 		
-		if (response != null)
-			return response.getAsJsonArray();
-		else
-			return new JsonArray();
+		if (response != null) {			
+			Type listType = new TypeToken<List<Recommendation>>() {}.getType();
+			return gson.fromJson(response.getAsJsonArray(), listType);
+		} else {
+			return new ArrayList<Recommendation>();
+		}
 	} 
 	
 	/**

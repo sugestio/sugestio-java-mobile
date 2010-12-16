@@ -23,17 +23,19 @@
  */
 package example;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
+import java.util.List;
+
 import com.sugestio.client.SugestioClient;
 import com.sugestio.client.SugestioResult;
 import com.sugestio.client.model.Consumption;
 import com.sugestio.client.model.Item;
+import com.sugestio.client.model.Recommendation;
 
 public class Example {
 
 	public static void main(String[] args) {
 		//Example.getRecommendations();
+		//Example.getSimilarItems();
 		//Example.addConsumption();
 		//Example.addItem();		
 	}
@@ -43,9 +45,22 @@ public class Example {
 		SugestioClient client = new SugestioClient("sandbox");
 		
 		try {
-			JsonArray recommendations = client.getRecommendations("1", null);
+			List<Recommendation> recommendations = client.getRecommendations("1", null);
 			Example.print(recommendations);
-		} catch (Exception e) {			
+		} catch (Exception e) {	
+			e.printStackTrace();
+		}		
+		
+	}
+	
+	public static void getSimilarItems() {
+		
+		SugestioClient client = new SugestioClient("sandbox");
+		
+		try {
+			List<Recommendation> recommendations = client.getSimilarItems("1", null);
+			Example.print(recommendations);
+		} catch (Exception e) {	
 			e.printStackTrace();
 		}		
 		
@@ -80,24 +95,12 @@ public class Example {
 		Example.print(result);
 	}
 	
-	private static void print (JsonArray recommendations) {
+	private static void print (List<Recommendation> recommendations) {
 		
-		System.out.println(recommendations.size() + " recommendations.");
+		System.out.println(recommendations.size() + " recommendations:");
 		
-		for (int i=0; i<recommendations.size(); i++) {
-			
-			JsonObject recommendation = recommendations.get(i).getAsJsonObject();
-			String itemid = recommendation.get("itemid").getAsString();
-			String score = recommendation.get("score").getAsString();
-			
-			if (recommendation.has("item")) {			
-				JsonObject item = recommendation.get("item").getAsJsonObject();				
-				System.out.println(item.get("title").getAsString() + " (" + score + ")");
-			} else {
-				System.out.println(itemid + " (" + score + ")");
-			}
-			
-			
+		for (Recommendation r : recommendations) {
+			System.out.println(r.getItem().getTitle() + " (" + r.getScore() + ")");
 		}
 	}
 	
