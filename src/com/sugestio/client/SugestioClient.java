@@ -69,6 +69,14 @@ public class SugestioClient {
 	}
 	
 	/**
+	 * Change the end point
+	 * @param baseUri
+	 */
+	public void setBaseUri(String baseUri) {
+		this.baseUri = baseUri;
+	}
+	
+	/**
 	 * Get personal recommendations for the given user.
 	 * @param userid the user
 	 * @param parameters query parameters
@@ -232,8 +240,8 @@ public class SugestioClient {
 	}
 	
 	/**
-	 * Converts a JSON object into NameValuePairs suitable which can be attached as query parameters
-	 * when performing a GET or form data when performing a POST. 
+	 * Converts a JSON object into NameValuePairs which can be attached as query parameters
+	 * when performing a GET or as form data when performing a POST. 
 	 * @param json the JSON object
 	 * @return a list of NameValuePairs
 	 */
