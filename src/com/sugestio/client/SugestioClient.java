@@ -116,6 +116,24 @@ public class SugestioClient {
 	} 
 	
 	/**
+	 * Export item metadata
+	 * @param parameters
+	 * @return item metadata
+	 * @throws Exception
+	 */
+	public List<Item> exportItems(Map<String, String> parameters) throws Exception {
+		
+		JsonElement response = doGet("/items.json", parameters, false);
+		
+		if (response != null) {
+			Type listType = new TypeToken<List<Item>>() {}.getType();
+			return gson.fromJson(response.getAsJsonArray(), listType);
+		} else {
+			return new ArrayList<Item>();
+		}
+	}
+	
+	/**
 	 * Submit a consumption.
 	 * @param consumption the consumption
 	 * @return result

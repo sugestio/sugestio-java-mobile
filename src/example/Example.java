@@ -39,7 +39,8 @@ public class Example {
 		//Example.getRecommendations();
 		//Example.getSimilarItems();
 		//Example.addConsumption();
-		//Example.addItem();		
+		//Example.addItem();
+		//Example.exportItems();
 	}
 	
 	public static void getRecommendations() {
@@ -97,6 +98,28 @@ public class Example {
 		
 		SugestioResult result = client.addItem(item);		
 		Example.print(result);
+	}
+	
+	public static void exportItems() {
+		
+		SugestioClient client = new SugestioClient("sandbox");
+		Map<String, String> parameters = new HashMap<String, String>();
+		parameters.put("start", "2");
+		parameters.put("limit", "2");
+		
+		try {
+			
+			List<Item> items = client.exportItems(parameters);
+			
+			System.out.println(items.size() + " items:");
+			
+			for (Item item : items) {
+				System.out.println(item.getTitle());
+			}
+			
+		} catch (Exception e) {	
+			e.printStackTrace();
+		}	
 	}
 	
 	private static void print (List<Recommendation> recommendations) {
