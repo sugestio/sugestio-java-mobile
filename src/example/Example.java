@@ -41,6 +41,7 @@ public class Example {
 		//Example.addConsumption();
 		//Example.addItem();
 		//Example.exportItems();
+		//Example.getItem();
 	}
 	
 	public static void getRecommendations() {
@@ -120,6 +121,20 @@ public class Example {
 		} catch (Exception e) {	
 			e.printStackTrace();
 		}	
+	}
+	
+	public static void getItem() {
+		
+		SugestioClient client = new SugestioClient("sandbox");
+		
+		try {
+			
+			Item item = client.getItem("1");
+			System.out.println(item.getTitle());
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private static void print (List<Recommendation> recommendations) {

@@ -77,6 +77,23 @@ public class SugestioClient {
 	}
 	
 	/**
+	 * Get the metadata for the given item.
+	 * @param itemid the item
+	 * @return
+	 * @throws Exception
+	 */
+	public Item getItem(String itemid) throws Exception {
+		
+		JsonElement response = doGet("/items/"+itemid + ".json", null, true);
+		
+		if (response != null) {
+			return gson.fromJson(response.getAsJsonObject(), Item.class);
+		} else {
+			return null;
+		}
+	}
+	
+	/**
 	 * Get personal recommendations for the given user.
 	 * @param userid the user
 	 * @param parameters query parameters
@@ -139,7 +156,7 @@ public class SugestioClient {
 	 * @return result
 	 */
 	public SugestioResult addConsumption(Consumption consumption) {
-		return this.doPost("/consumptions", consumption);
+		return this.doPost("/consumptions.json", consumption);
 	}
 	
 	/**
@@ -148,7 +165,7 @@ public class SugestioClient {
 	 * @return result
 	 */
 	public SugestioResult addItem(Item item) {
-		return this.doPost("/items", item);
+		return this.doPost("/items.json", item);
 	}
 	
 	/**
@@ -157,7 +174,7 @@ public class SugestioClient {
 	 * @return result
 	 */
 	public SugestioResult addUser(User user) {
-		return this.doPost("/users", user);
+		return this.doPost("/users.json", user);
 	}
 
 	/**

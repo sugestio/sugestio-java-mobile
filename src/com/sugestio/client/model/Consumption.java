@@ -25,6 +25,7 @@ package com.sugestio.client.model;
 
 public class Consumption {	
 
+	private String id;
 	private String userid;
 	private String itemid;
 	private String type;
@@ -37,7 +38,20 @@ public class Consumption {
 	}
 	
 	/**
-	 * Creates a new consumption with required fields userid and itemid.
+	 * Creates a new consumption with the specified consumption id, userid and itemid.
+	 * @param id string that uniquely identifies the consumption
+	 * @param userid string that uniquely identifies the user 
+	 * @param itemid string that uniquely identifies the item
+	 */
+	public Consumption(String id, String userid, String itemid) {
+		this.id = id;
+		this.userid = userid;
+		this.itemid = itemid;
+	}
+	
+	/**
+	 * Creates a new consumption with required fields userid and itemid. 
+	 * Consumption id will be auto-generated.
 	 * @param userid string that uniquely identifies the user
 	 * @param itemid string that uniquely identifies the item
 	 */
@@ -114,6 +128,14 @@ public class Consumption {
 	 */
 	public void setDate(String date) {
 		this.date = date;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 	
 }

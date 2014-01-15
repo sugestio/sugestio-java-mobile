@@ -31,13 +31,18 @@ public class Item {
 	private String id;
 	private String title;
 	private String permalink;
+	private String thumbnail;
 	private String available;
+	private String price;
 	private String description_short;
-	private String description_long;
+	private String description_full;
 	private String from;
 	private String until;
+	private String location_city;
 	private String location_simple;
 	private String location_latlong;
+	private String published;
+	private String length;
 	private List<String> category = new ArrayList<String>();
 	private List<String> creator = new ArrayList<String>(); 
 	private List<String> segment = new ArrayList<String>();
@@ -129,15 +134,15 @@ public class Item {
 	/**
 	 * @return the description_long
 	 */
-	public String getDescription_long() {
-		return description_long;
+	public String getDescription_full() {
+		return description_full;
 	}
 
 	/**
 	 * @param description_long the description_long to set
 	 */
 	public void setDescription_long(String description_long) {
-		this.description_long = description_long;
+		this.description_full = description_long;
 	}
 
 	/**
@@ -266,5 +271,45 @@ public class Item {
 	
 	public void addTag(String tag) {
 		this.tag.add(tag);
+	}
+
+	public String getThumbnail() {
+		return thumbnail;
+	}
+
+	public void setThumbnail(String thumbnail) {
+		this.thumbnail = thumbnail;
+	}
+
+	public String getPrice() {
+		return price;
+	}
+
+	public void setPrice(String price) {
+		this.price = price;
+	}
+
+	public String getLocation_city() {
+		return location_city;
+	}
+
+	public void setLocation_city(String location_city) {
+		this.location_city = location_city;
+	}
+
+	public String getPublished() {
+		return published;
+	}
+
+	public void setPublished(String published) {
+		this.published = published;
+	}
+
+	public String getLength() {
+		return length;
+	}
+
+	public void setLength(String length) {
+		this.length = length;
 	}
 }
